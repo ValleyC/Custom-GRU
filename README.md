@@ -6,7 +6,7 @@ This repository contains a C++ implementation of a Gated Recurrent Unit (GRU) ne
 
 ## Features
 - **Custom Data Type Support**: Allows for easy switching between different data types (e.g., float, double, or fixed) for precision adjustments. Useful when designing hardware accelerator in Vitis HLS.
-- **Modular GRU Cells**: Separate functions for input-to-hidden and hidden-to-hidden transformations.
+- **Modular GRU Cells**: Separate functions for input-to-hidden and hidden-to-hidden layers.
 
 ## Configuration
 Before running the model, ensure to configure the following constants as per your requirements:
