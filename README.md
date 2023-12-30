@@ -5,13 +5,8 @@
 This repository contains a C++ implementation of a Gated Recurrent Unit (GRU) neural network. The code is designed to handle time-series data, ideal for applications such as sequence prediction, time-series analysis, and more. The model is structured with two GRU layers followed by a fully connected layer for output.
 
 ## Features
-- **Custom Data Type Support**: Allows for easy switching between different data types (e.g., float, double) for precision adjustments.
+- **Custom Data Type Support**: Allows for easy switching between different data types (e.g., float, double, or fixed) for precision adjustments. Useful when designing hardware accelerator in Vitis HLS.
 - **Modular GRU Cells**: Separate functions for input-to-hidden and hidden-to-hidden transformations.
-- **Scalable Hidden Layers**: Supports changing the hidden layer size through the `HIDDEN_SIZE` constant.
-
-## Prerequisites
-- C++ compiler (e.g., g++, clang++)
-- Basic understanding of neural networks and GRU architecture.
 
 ## Configuration
 Before running the model, ensure to configure the following constants as per your requirements:
@@ -21,8 +16,6 @@ Before running the model, ensure to configure the following constants as per you
 - `HIDDEN_SIZE`: Size of the hidden layers.
 
 ## Usage
-Include the GRU network in your project by adding `#include "path_to_gru_network.h"`.
-
 To use the network:
 1. Prepare your input data in the shape `[LOOKBACK][INPUT_SIZE]`.
 2. Initialize an array for the output with the shape `[OUTPUT_SIZE]`.
@@ -37,8 +30,8 @@ gru_network(input_data, output);
 ```
 
 ## Customization
-- You can change the `custom_type` definition to switch between different numerical precision types (e.g., `float`, `double`).
-- Adjust `LOOKBACK`, `INPUT_SIZE`, `OUTPUT_SIZE`, and `HIDDEN_SIZE` to fit the dimensions of your data and model requirements.
+- You can change the `custom_type` definition to switch between different numerical precision types (e.g., `float`, `double`, or `ap_fixed<32, 8>`).
+- Adjust `LOOKBACK`, `INPUT_SIZE`, `OUTPUT_SIZE`, and `HIDDEN_SIZE` to fit the dimensions of your own trained model requirements.
 
 ## Weights and Biases
 The weights and biases (`WandB.h`) need to be set according to a pre-trained model. This file should contain:
@@ -48,4 +41,4 @@ The weights and biases (`WandB.h`) need to be set according to a pre-trained mod
 
 ## Note
 - This code does not include the functionality to train the GRU model. It's designed to work with weights and biases exported from a pre-trained model (e.g., a model trained in PyTorch).
-- Ensure the scaling of the input data and output data matches the scale used during the training of the model.
+- The input data are assumed to be after-scaling, and therefore the output is also scaled. Ensure the scaling of the input data and output data matches the scale used during the training of the model.
