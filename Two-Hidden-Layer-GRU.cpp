@@ -23,26 +23,26 @@ custom_type relu(custom_type x) {
 // first layer of the GRU: input-to-hidden layer
 void input_to_hidden(custom_type* input_t, custom_type* hidden) {
 
-    custom_type gi[60] = {0};
-    custom_type gh[60] = {0};
+    custom_type gi[HIDDEN_SIZE*3] = {0};
+    custom_type gh[HIDDEN_SIZE*3] = {0};
 
-    for (int i = 0; i < 60; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < HIDDEN_SIZE*3; i++) {
+        for (int j = 0; j < INPUT_SIZE; j++) {
             gi[i] += input_t[j] * gru_weight_ih_l0[i][j];
         }
-        for (int j = 0; j < 20; j++) {
+        for (int j = 0; j < HIDDEN_SIZE; j++) {
             gh[i] += hidden[j] * gru_weight_hh_l0[i][j];
         }
         gi[i] += gru_bias_ih_l0[i];
         gh[i] += gru_bias_hh_l0[i];
     }
 
-    custom_type resetgate[20] = {0}, inputgate[20] = {0}, newgate[20] = {0};
+    custom_type resetgate[HIDDEN_SIZE] = {0}, inputgate[HIDDEN_SIZE] = {0}, newgate[HIDDEN_SIZE] = {0};
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < HIDDEN_SIZE; i++) {
         resetgate[i] = sigmoid(gi[i] + gh[i]);
-        inputgate[i] = sigmoid(gi[i+20] + gh[i+20]);
-        newgate[i] = std::tanh(gi[i+40] + resetgate[i] * gh[i+40]);
+        inputgate[i] = sigmoid(gi[i+HIDDEN_SIZE] + gh[i+HIDDEN_SIZE]);
+        newgate[i] = std::tanh(gi[i+HIDDEN_SIZE*2] + resetgate[i] * gh[i+HIDDEN_SIZE*2]);
         hidden[i] = newgate[i] + inputgate[i] * (hidden[i] - newgate[i]);
     }
 }
